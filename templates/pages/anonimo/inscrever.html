@@ -57,28 +57,29 @@
         <div class="content">
             <h1 class="text-center">Inscreva-se</h1>
             <p class="text-center">Preencha todos os campos abaixo para inscrever-se no Fitness Life</p>
-            <form action="/inscrever" method="POST">
+            <form action="/post_inscrever" method="post">
                 <input type="text" class="form-control" name="nome" placeholder="Nome" required>
                 <input type="email" class="form-control" name="email" placeholder="Email" required>
                 <input type="password" class="form-control" name="senha" placeholder="Senha" required>
+                <input type="password" class="form-control" name="confsenha" placeholder="Confirme a Senha" required>
 
                 <p>Marque uma das opções abaixo:</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="profissao" value="cliente" id="cliente">
+                    <input class="form-check-input" type="radio" name="perfil" value="1" id="cliente">
                     <label class="form-check-label" for="cliente">
                         Sou Cliente
                     </label>
-                </div>
+                </div>                
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="profissao" value="educador_fisico" id="educador_fisico">
-                    <label class="form-check-label" for="educador_fisico">
-                        Sou Educador Físico
+                    <input class="form-check-input" type="radio" name="perfil" value="2" id="nutricionista">
+                    <label class="form-check-label" for="nutricionista">
+                        Sou Nutricionista
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="profissao" value="nutricionista" id="nutricionista">
-                    <label class="form-check-label" for="nutricionista">
-                        Sou Nutricionista
+                    <input class="form-check-input" type="radio" name="perfil" value="3" id="educador_fisico">
+                    <label class="form-check-label" for="educador_fisico">
+                        Sou Educador Físico
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary">Inscrever-se</button>

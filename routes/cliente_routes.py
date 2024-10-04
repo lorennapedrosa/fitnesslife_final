@@ -1,13 +1,21 @@
 import calendar
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Request, status
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/cliente")
 
 
 templates = Jinja2Templates(directory="templates")
+
+@router.get("/")
+def get_root(request: Request):
+    return RedirectResponse("/cliente/perfil", status.HTTP_303_SEE_OTHER)
+
+@router.get("/perfil")
+def get_root(request: Request):
+    return templates.TemplateResponse("pages/cliente/perfil.html", {"request": request})
 
 @router.get("/planos")
 def get_root(request: Request):
@@ -28,10 +36,6 @@ def get_root(request: Request):
 @router.get("/painelcliente")
 def get_root(request: Request):
     return templates.TemplateResponse("pages/cliente/painelcliente.html", {"request": request})
-
-@router.get("/perfil")
-def get_root(request: Request):
-    return templates.TemplateResponse("pages/cliente/perfil.html", {"request": request})
 
 @router.get("/calendario/{year?}/{month?}", response_class=HTMLResponse)
 def get_calendario(request: Request, year: int = None, month: int = None):

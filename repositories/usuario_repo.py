@@ -15,6 +15,28 @@ class UsuarioRepo:
             cursor.execute(SQL_CRIAR_TABELA)
 
     @classmethod
+    def inserir(cls, usuario: Usuario) -> bool:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            resultado = cursor.execute(SQL_INSERIR_USUARIO,
+                (usuario.nome,
+                 usuario.email,
+                 usuario.senha,
+                 usuario.perfil))
+            return resultado.rowcount > 0
+        
+    @classmethod
+    def checar_credenciais(cls, email: str, senha: str) -> Optional[UsuarioAutenticado]:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            (id, nome, email, perfil, senha_hash) = cursor.execute(
+                SQL_CHECAR_CREDENCIAIS, (email,)).fetchone()
+            if id:
+                if conferir_senha(senha, senha_hash):
+                    return UsuarioAutenticado(id, nome, email, perfil)
+            return None
+
+    @classmethod
     def obter_por_id(cls, id: int) -> Optional[Usuario]:
         with obter_conexao() as db:
             cursor = db.cursor()
@@ -24,19 +46,7 @@ class UsuarioRepo:
                 usuario = Usuario(*dados)
                 return usuario
             return None
-        
-    @classmethod
-    def inserir(cls, usuario: Usuario) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(SQL_INSERIR_USUARIO,
-                (usuario.nome,
-                 usuario.descricao_pessoal,
-                 usuario.email,
-                 usuario.senha,
-                 usuario.perfil))
-            return resultado.rowcount > 0
-        
+                
     @classmethod
     def atualizar_dados(cls, usuario: Usuario) -> bool:
         with obter_conexao() as db:
@@ -56,26 +66,9 @@ class UsuarioRepo:
             cursor = db.cursor()
             resultado = cursor.execute(
                 SQL_ATUALIZAR_SENHA, (senha, id))
-            return resultado.rowcount > 0
-    
-    @classmethod
-    def atualizar_tema(cls, id: int, tema: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(
-                SQL_ATUALIZAR_TEMA, (tema, id))
-            return resultado.rowcount > 0
+            return resultado.rowcount > 0    
       
-    @classmethod
-    def checar_credenciais(cls, email: str, senha: str) -> Optional[UsuarioAutenticado]:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            (id, nome, email, perfil, senha_hash) = cursor.execute(
-                SQL_CHECAR_CREDENCIAIS, (email,)).fetchone()
-            if id:
-                if conferir_senha(senha, senha_hash):
-                    return UsuarioAutenticado(id, nome, email, perfil)
-            return None
+    
     
     @classmethod
     def excluir_usuario(cls, id: int) -> bool:

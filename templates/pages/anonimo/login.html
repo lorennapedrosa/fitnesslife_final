@@ -52,13 +52,11 @@
         <div class="content">
             <h1 class="text-center">Login</h1>
             <p class="text-center">Preencha os dados abaixo para acessar o Fitness Life</p>
-            <form action="/login" method="POST">
+            <form action="/post_login" method="post">
                 <input type="email" class="form-control" name="email" placeholder="Email" required>
                 <input type="password" class="form-control" name="senha" placeholder="Senha" required>
-
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
-
             <div class="text-center mt-3">
                 <a href="/recuperar_senha">Esqueceu sua senha?</a>
             </div>

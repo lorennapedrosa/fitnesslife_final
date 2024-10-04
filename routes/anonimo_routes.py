@@ -23,14 +23,12 @@ async def get_root(request: Request):
             return RedirectResponse("/personal", status_code=status.HTTP_303_SEE_OTHER)
     return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
     
-
 @router.get("/login")
 async def get_login(request: Request):
     return templates.TemplateResponse("pages/anonimo/login.html", {"request": request})
 
-
 @router.post("/post_login")
-async def post_entrar(
+async def post_login(
     email: str = Form(...), 
     senha: str = Form(...)):
     usuario = UsuarioRepo.checar_credenciais(email, senha)
@@ -42,7 +40,7 @@ async def post_entrar(
     match (usuario.perfil):
         case 1: nome_perfil = "cliente"
         case 2: nome_perfil = "nutricionista"
-        case 3: nome_perfil = "educador físico"
+        case 3: nome_perfil = "educadorfisico"
         case _: nome_perfil = ""
     
     response = RedirectResponse(f"/{nome_perfil}", status_code=status.HTTP_303_SEE_OTHER)    
@@ -56,9 +54,8 @@ async def post_entrar(
     return response
 
 @router.get("/inscrever")
-async def get_cadastrar(request: Request):
+async def get_inscrever(request: Request):
     return templates.TemplateResponse("pages/anonimo/inscrever.html", {"request": request})
-
 
 @router.post("/post_inscrever")
 async def post_inscrever(
@@ -76,7 +73,7 @@ async def post_inscrever(
         senha=senha_hash,
         perfil=perfil)
     UsuarioRepo.inserir(usuario)
-    return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/recuperar_senha")
 async def get_recuperar_senha(request: Request):
