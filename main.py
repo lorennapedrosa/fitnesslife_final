@@ -2,7 +2,7 @@ import dotenv
 from fastapi import Depends, FastAPI
 from fastapi.staticfiles import StaticFiles
 from repositories.usuario_repo import UsuarioRepo
-from routes.main_routes import router as main_router
+from routes.anonimo_routes import router as main_router
 from routes.usuario_routes import router as usuario_router
 from routes.personal_routes import router as personal_router
 from routes.cliente_routes import router as cliente_router

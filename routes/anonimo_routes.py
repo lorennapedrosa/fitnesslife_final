@@ -16,26 +16,26 @@ async def get_root(request: Request):
     usuario = request.state.usuario if hasattr(request.state, "usuario") else None
     if usuario:   
         if usuario.perfil == 1:
-            return RedirectResponse("pages/cliente", status_code=status.HTTP_303_SEE_OTHER)
+            return RedirectResponse("/cliente", status_code=status.HTTP_303_SEE_OTHER)
         if usuario.perfil == 2:
-            return RedirectResponse("pages/nutricionista", status_code=status.HTTP_303_SEE_OTHER)
+            return RedirectResponse("/nutricionista", status_code=status.HTTP_303_SEE_OTHER)
         if usuario.perfil == 3:
-            return RedirectResponse("pages/personal", status_code=status.HTTP_303_SEE_OTHER)
-    return templates.TemplateResponse("pages/usuario/inicio.html", {"request": request})
+            return RedirectResponse("/personal", status_code=status.HTTP_303_SEE_OTHER)
+    return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
     
 
 @router.get("/login")
 async def get_login(request: Request):
-    return templates.TemplateResponse("pages/usuario/login.html", {"request": request})
+    return templates.TemplateResponse("pages/anonimo/login.html", {"request": request})
 
 
-@router.post("/post_entrar")
+@router.post("/post_login")
 async def post_entrar(
     email: str = Form(...), 
     senha: str = Form(...)):
     usuario = UsuarioRepo.checar_credenciais(email, senha)
     if usuario is None:
-        response = RedirectResponse("pages/usuario/login", status_code=status.HTTP_303_SEE_OTHER)
+        response = RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
         return response
     token = criar_token(usuario.id, usuario.nome, usuario.email, usuario.perfil)
     nome_perfil = None
@@ -55,20 +55,20 @@ async def post_entrar(
     )
     return response
 
-@router.get("/cadastrar")
+@router.get("/inscrever")
 async def get_cadastrar(request: Request):
-    return templates.TemplateResponse("pages/usuario/cadastrar.html", {"request": request})
+    return templates.TemplateResponse("pages/anonimo/inscrever.html", {"request": request})
 
 
-@router.post("/post_cadastrar")
-async def post_cadastrar(
+@router.post("/post_inscrever")
+async def post_inscrever(
     nome: str = Form(...),
     email: str = Form(...),
     senha: str = Form(...),
     confsenha: str = Form(...),
     perfil: int = Form(...)):
     if senha != confsenha:
-        return RedirectResponse("pages/usuario/cadastrar", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse("/inscrever", status_code=status.HTTP_303_SEE_OTHER)
     senha_hash = obter_hash_senha(senha)
     usuario = Usuario(
         nome=nome,
@@ -78,15 +78,6 @@ async def post_cadastrar(
     UsuarioRepo.inserir(usuario)
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
-
-
-@router.get("/sair")
-async def get_sair():
-    response = RedirectResponse("/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
-    response.set_cookie(
-        key=NOME_COOKIE_AUTH,
-        value="",
-        max_age=1,
-        httponly=True,
-        samesite="lax")
-    return response
+@router.get("/recuperar_senha")
+async def get_recuperar_senha(request: Request):
+    return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html")
