@@ -4,5 +4,5 @@ services:
     container_name: fitnesslife.cachoeiro.es
     build: .
     ports:
-      - "8210:8000"
+      - "8206:8000"
   
