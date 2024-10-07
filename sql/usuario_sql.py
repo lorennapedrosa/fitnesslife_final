@@ -2,23 +2,24 @@ SQL_CRIAR_TABELA = """
     CREATE TABLE IF NOT EXISTS usuario (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     nome TEXT NOT NULL,
-    data_nascimento DATE NOT NULL,
+    descricao_pessoal TEXT,
+    data_nascimento DATE,
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL,
-    tema TEXT NOT NULL,
-    perfil INTEGER NOT NULL)
+    perfil INTEGER NOT NULL,
+    verificado INTEGER NOT NULL DEFAULT 0)
 """
 
 SQL_OBTER_POR_ID = """
-    SELECT id, nome, data_nascimento, email, senha, tema, perfil
+    SELECT id, nome, descricao_pessoal, data_nascimento, email, senha, perfil
     FROM usuario
     WHERE id=?
 """
 
 SQL_INSERIR_USUARIO = """
     INSERT INTO usuario 
-    (nome, data_nascimento, email, senha, tema, perfil)
-    VALUES (?, ?, ?, ?, ?, "default", ?)
+    (nome, email, senha, perfil)
+    VALUES (?, ?, ?, ?)
 """
 
 SQL_CHECAR_CREDENCIAIS = """
@@ -29,20 +30,13 @@ SQL_CHECAR_CREDENCIAIS = """
 
 SQL_ATUALIZAR_DADOS = """
     UPDATE usuario
-    SET nome=?, data_nascimento=?, email=?, telefone=?
+    SET nome=?, descricao_pessoal=?, data_nascimento=?, email=?
     WHERE id=?
 """
-
 
 SQL_ATUALIZAR_SENHA = """
     UPDATE usuario
     SET senha=?
-    WHERE id=?
-"""
-
-SQL_ATUALIZAR_TEMA = """
-    UPDATE usuario
-    SET tema=?
     WHERE id=?
 """
 
