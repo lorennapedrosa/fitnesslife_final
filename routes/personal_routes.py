@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Request, status
 from fastapi.templating import Jinja2Templates
 
-def common_view_params(request: Request, show_header=True, show_footer=True, show_sidebar=True):
+'''def common_view_params(request: Request, show_header=True, show_footer=True, show_sidebar=True):
     return {
         "request": request,
         "show_header": show_header,
         "show_footer": show_footer,
         "show_sidebar": show_sidebar
-    }
+    }'''
 #
 # PERSONAL
 #

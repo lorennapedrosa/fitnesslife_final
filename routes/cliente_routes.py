@@ -17,6 +17,7 @@ def get_root(request: Request):
 def get_root(request: Request):
     return templates.TemplateResponse("pages/cliente/perfil.html", {"request": request})
 
+
 @router.get("/planos")
 def get_root(request: Request):
     return templates.TemplateResponse("pages/cliente/planos.html", {"request": request})
