@@ -109,12 +109,9 @@
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-green">
-    {% if show_header %}
-    {% include "header_personal.html" %}
-    {% endif %}
+    {% include "shared/header_personal.html" %}
     <main class="d-flex flex-column flex-grow-1">
         <div class="d-flex flex-grow-1">
-            {% if show_sidebar %}
             <aside class="coluna-esquerda p-3 d-flex flex-column justify-content-between">
                 <div>
                     <div class="px-5 mb-2 border-bottom border-bottom-1 border-secondary-subtle">
@@ -122,29 +119,26 @@
                         <p class="lead text-center">Brunão</p>
                     </div>
                     <nav class="nav nav-pills flex-column mt-2">
-                        <a class="nav-link text-dark-beige" href="/personal_inicial">Meu Perfil</a>
-                        <a class="nav-link text-dark-beige" href="/meus_alunos_personal">Meus Alunos</a>
-                        <a class="nav-link text-dark-beige" href="/artigos_personal">Artigos</a>
-                        <a class="nav-link text-dark-beige" href="/configuracoes_personal">Configurações</a>
-                        <a class="nav-link text-dark-beige" href="/sair">Sair</a>
+                        <a class="nav-link text-dark-beige" href="/personal/inicial">Meu Perfil</a>
+                        <a class="nav-link text-dark-beige" href="/personal/meus_alunos">Meus Alunos</a>
+                        <a class="nav-link text-dark-beige" href="/personal/artigos">Artigos</a>
+                        <a class="nav-link text-dark-beige" href="/personal/configuracoes">Configurações</a>
+                        <a class="nav-link text-dark-beige" href="/personal/sair">Sair</a>
                     </nav>
                 </div>
                 <nav class="nav nav-pills flex-column mt-3">
-                    <a class="nav-link text-dark-beige" href="/politicadeprivacidade_personal">Política de Privacidade</a>
-                    <a class="nav-link text-dark-beige" href="/termos_personal">Termos de Uso</a>
-                    <a class="nav-link text-dark-beige" href="/suporte_personal">Suporte</a>
+                    <a class="nav-link text-dark-beige" href="/personal/politicadeprivacidade">Política de Privacidade</a>
+                    <a class="nav-link text-dark-beige" href="/personal/termos">Termos de Uso</a>
+                    <a class="nav-link text-dark-beige" href="/personal/suporte">Suporte</a>
                 </nav>
             </aside>
-            {% endif %}
             <section class="flex-grow-1 p-3">
                 {% block conteudo %}
                 {% endblock %}
             </section>
         </div>
     </main>
-    {% if show_footer %}
-    {% include "footer.html" %}
-      {% endif %}
+    {% include "shared/footer.html" %}
     <script src="/static/lib/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>
