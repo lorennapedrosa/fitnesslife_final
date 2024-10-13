@@ -61,3 +61,15 @@ async def get_historico_alunos(request: Request):
 @router.get("/meusalunos")  
 async def get_meusalunos(request: Request):
     return templates.TemplateResponse("pages/personal/meus_alunos_personal.html", {"request": request})
+
+@router.get("/artigos_postados")  
+async def get_artigos_postados(request: Request):
+    return templates.TemplateResponse("pages/personal/artigos_postados_personal.html", {"request": request})
+
+@router.get("/exercicios_postados")  
+async def get_exercicios_postados(request: Request):
+    return templates.TemplateResponse("pages/personal/exercicios_postados_personal.html", {"request": request})
+
+@router.get("/fichas_postadas")  
+async def get_fichas_postadas(request: Request):
+    return templates.TemplateResponse("pages/personal/fichas_postadas_personal.html", {"request": request})
