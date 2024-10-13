@@ -6,10 +6,6 @@ router = APIRouter(prefix="/personal")
 
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/")
-async def get_root(request: Request):
-    return RedirectResponse("pages/personal/pagina_inicial_personal.html", status.HTTP_303_SEE_OTHER)
-
 @router.get("/inicial")  
 async def get_inicial(request: Request):
     return templates.TemplateResponse("pages/personal/pagina_inicial_personal.html", {"request": request})

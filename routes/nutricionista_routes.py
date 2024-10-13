@@ -1,16 +1,13 @@
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, HTTPException, Request, status
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/nutricionista")
 
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/")  
-def get_root(request: Request):
-    return templates.TemplateResponse("pages/nutricionista/pagina_inicial_nutricionista.html", status.HTTP_303_SEE_OTHER)
-
 @router.get("/inicial")  
-def get_root(request: Request):
+async def get_root(request: Request):
     return templates.TemplateResponse("pages/nutricionista/pagina_inicial_nutricionista.html", {"request": request})
 
 @router.get("/configuracoes")  
@@ -56,3 +53,7 @@ async def get_receitas_postadas(request: Request):
 @router.get("/artigos_postados")  
 async def get_artigos_postados(request: Request):
     return templates.TemplateResponse("pages/personal/artigos_postados_nutricionista.html", {"request": request})
+
+@router.get("/meusalunos")  
+async def get_meusalunos(request: Request):
+    return templates.TemplateResponse("pages/personal/meus_alunos_nutricionista.html", {"request": request})
