@@ -33,14 +33,14 @@ async def post_login(
     senha: str = Form(...)):
     usuario = UsuarioRepo.checar_credenciais(email, senha)
     if usuario is None:
-        response = RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
+        response = RedirectResponse("pages/anonimo/login", status_code=status.HTTP_303_SEE_OTHER)
         return response
     token = criar_token(usuario.id, usuario.nome, usuario.email, usuario.perfil)
     nome_perfil = None
     match (usuario.perfil):
         case 1: nome_perfil = "cliente"
         case 2: nome_perfil = "nutricionista"
-        case 3: nome_perfil = "educadorfisico"
+        case 3: nome_perfil = "personal"
         case _: nome_perfil = ""
     
     response = RedirectResponse(f"/{nome_perfil}", status_code=status.HTTP_303_SEE_OTHER)    
@@ -65,7 +65,7 @@ async def post_inscrever(
     confsenha: str = Form(...),
     perfil: int = Form(...)):
     if senha != confsenha:
-        return RedirectResponse("/inscrever", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse("pages/anonimo/inscrever", status_code=status.HTTP_303_SEE_OTHER)
     senha_hash = obter_hash_senha(senha)
     usuario = Usuario(
         nome=nome,
@@ -73,8 +73,12 @@ async def post_inscrever(
         senha=senha_hash,
         perfil=perfil)
     UsuarioRepo.inserir(usuario)
-    return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse("pages/anonimo/login", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/recuperar_senha")
 async def get_recuperar_senha(request: Request):
     return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html")
+
+@router.get("/index")
+async def get_index(request: Request):
+    return templates.TemplateResponse("pages/anonimo/index.html")

@@ -9,6 +9,10 @@ router = APIRouter(prefix="/cliente")
 
 templates = Jinja2Templates(directory="templates")
 
+@router.get("/")
+async def get_root(request: Request):
+    return templates.TemplateResponse("pages/cliente/perfil.html", {"request": request})
+
 @router.get("/perfil")
 async def get_perfil(request: Request):
     return templates.TemplateResponse("pages/cliente/perfil.html", {"request": request})
