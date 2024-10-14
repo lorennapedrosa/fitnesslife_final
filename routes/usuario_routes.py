@@ -1,19 +1,25 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from util.auth import NOME_COOKIE_AUTH
+from models.usuario_model import Usuario
 
 router = APIRouter(prefix="/usuario")
 
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/sair")
-async def get_sair():
-    response = RedirectResponse("/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+@router.get("/tema")
+async def get_tema(request: Request):
+    temas = ["default", "cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "litera", "lumen", "lux", "materia", "minty", "morph", "pulse", "quartz", "sandstone", "simplex", "sketchy", "slate", "solar", "spacelab", "superhero", "united", "vapor", "yeti", "zephyr"]
+    return templates.TemplateResponse("pages/usuario/tema.html", {"request": request, "temas": temas})
+
+@router.post("/post_tema")
+async def post_tema(tema: str = Form(...)):
+    response = RedirectResponse("/usuario/tema", status_code=status.HTTP_303_SEE_OTHER)
     response.set_cookie(
-        key=NOME_COOKIE_AUTH,
-        value="",
-        max_age=1,
+        key="tema",
+        value=tema,
+        max_age=3600*24*365*10,
         httponly=True,
-        samesite="lax")
+        samesite="lax"
+    )
     return response
