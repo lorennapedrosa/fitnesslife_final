@@ -57,56 +57,6 @@
             background-color: rgba(255, 255, 255, 1);
         }
     </style>
-    <style>
-        .navbar.bg-custom {
-            background-color: #5A6978 !important;
-        }
-
-        footer.bg-custom {
-            background-color: #5A6978 !important;
-        }
-
-        .bg-beige {
-            background-color: #F0F0F0 !important;
-        }
-
-        .bg-green {
-            background-color: #BFDCCC !important;
-        }
-
-        input.border-beige {
-            border-color: #F0F0F0 !important;
-        }
-
-        .btn-beige {
-            --bs-btn-bg: #F0F0F0 !important;
-            --bs-btn-border-color: #F0F0F0 !important;
-            --bs-btn-hover-color: #000;
-            --bs-btn-hover-bg: #ebebe6 !important;
-            --bs-btn-hover-border-color: #ebebe6 !important;
-        }
-
-        aside.coluna-esquerda {
-            background-color: #F0F0F0;
-            width: 250px;
-        }
-
-        img.rounded-full {
-            border-radius: 50% !important;
-        }
-
-        .text-dark-beige {
-            color: #909090 !important;
-            padding: .1rem .5rem;
-            margin: .1rem 0;
-        }
-
-        .nav-pills .nav-link.active,
-        .nav-pills .show>.nav-link {
-
-            background-color: rgba(255, 255, 255, 1);
-        }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100 bg-green">
     {% include "shared/header_nutricionista.html" %}
@@ -123,7 +73,7 @@
                         <a class="nav-link text-dark-beige" href="/nutricionista/meusalunos">Meus Alunos</a>
                         <a class="nav-link text-dark-beige" href="/nutricionista/artigos">Artigos</a>
                         <a class="nav-link text-dark-beige" href="/nutricionista/configuracoes">Configurações</a>
-                        <a class="nav-link text-dark-beige" href="#" id="logoutButton">Sair</a>
+                        <a class="nav-link text-dark-beige" href="#" id="logoutButton" data-bs-toggle="modal" data-bs-target="#logoutModal">Sair</a>
                     </nav>
                 </div>
                 <nav class="nav nav-pills flex-column mt-3">
@@ -139,7 +89,26 @@
         </div>
     </main>
     {% include "shared/footer.html" %}
+
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmar Saída</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Você realmente deseja sair?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                    <a href="/sair" class="btn btn-primary">Sim</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/static/lib/bootstrap/js/bootstrap.bundle.js"></script>
 </body>
 </html>
-
