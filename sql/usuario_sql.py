@@ -1,10 +1,10 @@
 SQL_CRIAR_TABELA = """
     CREATE TABLE IF NOT EXISTS usuario (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    nome TEXT NOT NULL,
-    descricao_pessoal TEXT,
-    data_nascimento DATE,
-    email TEXT NOT NULL UNIQUE,
+    nome VARCHAR(100) NOT NULL,
+    descricao_pessoal TEXT NULL,
+    data_nascimento DATE NULL,
+    email TEXT NOT NULL,
     senha TEXT NOT NULL,
     perfil INTEGER NOT NULL,
     verificado INTEGER NOT NULL DEFAULT 0)

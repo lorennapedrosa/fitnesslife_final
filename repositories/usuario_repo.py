@@ -19,17 +19,16 @@ class UsuarioRepo:
             resultado = cursor.execute(SQL_INSERIR_USUARIO,
                 (usuario.nome,
                  usuario.email,
-                 usuario.telefone,
                  usuario.senha,
                  usuario.perfil))
             return resultado.rowcount > 0
         
     @classmethod
-    def atualizar_dados(cls, nome: str, email: str, telefone: str) -> bool:
+    def atualizar_dados(cls, nome: str, email: str) -> bool:
         with obter_conexao() as db:
             cursor = db.cursor()
             resultado = cursor.execute(
-                SQL_ATUALIZAR_DADOS, (nome, email, telefone, email))
+                SQL_ATUALIZAR_DADOS, (nome, email, email))
             return resultado.rowcount > 0
     
     @classmethod
@@ -40,13 +39,6 @@ class UsuarioRepo:
                 SQL_ATUALIZAR_SENHA, (senha, email))
             return resultado.rowcount > 0
     
-    @classmethod
-    def atualizar_tema(cls, email: str, tema: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(
-                SQL_ATUALIZAR_SENHA, (tema, email))
-            return resultado.rowcount > 0
       
     @classmethod
     def checar_credenciais(cls, email: str, senha: str) -> Optional[tuple]:

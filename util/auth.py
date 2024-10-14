@@ -109,3 +109,4 @@ def configurar_swagger_auth(app):
         }
     }
     app.openapi_schema["security"] = [{"BearerAuth": []}]
+

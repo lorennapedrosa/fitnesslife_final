@@ -65,14 +65,13 @@ async def get_inscrever(request: Request):
 async def post_inscrever(
     nome: str = Form(...),
     email: str = Form(...),
-    telefone: str = Form(...),
     senha: str = Form(...),
     confsenha: str = Form(...),
     perfil: int = Form(...)):
     if senha != confsenha:
         return RedirectResponse("/inscrever", status_code=status.HTTP_303_SEE_OTHER)
     senha_hash = obter_hash_senha(senha)
-    usuario = Usuario(None, nome, email, telefone, senha_hash, None, perfil)
+    usuario = Usuario(None, nome, email, senha_hash, perfil)
     UsuarioRepo.inserir(usuario)
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
