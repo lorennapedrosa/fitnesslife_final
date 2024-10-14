@@ -1,86 +1,123 @@
-{% extends "shared/base_nutricionista.html" %}
-{% block subtitulo %}Contato{% endblock %}
+{% extends "shared/base_personal.html" %}
+{% block subtitulo %}Adicionar Ficha de Exercícios{% endblock %}
 {% block conteudo %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-header text-center">
+            <h2>Adicionar Dieta</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/salvar_ficha">
+                <h4>Cadastrar Dieta</h4>
+                <div class="form-group mb-3">
+                    <label for="nomeExercicio">Nome da dieta</label>
+                    <input type="text" class="form-control" id="nomeExercicio" name="nome_exercicio" required>
+                </div>
+                <div class="form-group mb-3">
+                    <textarea placeholder="Digite aqui a descrição da dieta" style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                </div>
+            </form>
 
-<div class="container"
-    style="background-color: rgb(241, 241, 241); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <h3>Cadastrar Dieta</h3>
-        <div class="create-diet-form">
-                <input type="text" placeholder="Título da Dieta:" style="width: 100%; margin-bottom: 10px;" />
-                <textarea placeholder="Digite aqui a descrição da dieta"
-            style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+            <h4>Selecionar Receitas</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Selecionar</th>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 5%; text-align: center;">
+                                <input type="checkbox" />
+                            </td>
+                            <td>Receita Low Carb</td>
+                            <td>Dieta baixa em carboidratos</td>
+                            <td>05/01/24</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 5%; text-align: center;">
+                                <input type="checkbox" />
+                            </td>
+                            <td>Receita vegana</td>
+                            <td>Consumo de alimentos de origem vegetal</td>
+                            <td>18/02/24</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 5%; text-align: center;">
+                                <input type="checkbox" />
+                            </td>
+                            <td>Receita hipercalórica</td>
+                            <td>Para ganho de massa muscular</td>
+                            <td>03/03/24</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 5%; text-align: center;">
+                                <input type="checkbox" />
+                            </td>
+                            <td>Receita Flexível</td>
+                            <td>Controle de calorias e macronutrientes</td>
+                            <td>14/04/24</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 5%; text-align: center;">
+                                <input type="checkbox" />
+                            </td>
+                            <td>Receita proteica</td>
+                            <td>Alto consumo de proteínas</td>
+                            <td>27/05/24</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <form method="post" action="/salvar_receita" style="margin-top: 20px;">
+                <h4>Cadastrar Receita</h4>
+                <div class="form-group mb-3">
+                    <label for="nomeExercicio">Nome da Receita</label>
+                    <input type="text" class="form-control" id="nomereceita" name="nome_receita" required>
+                </div>
+                <div class="form-group mb-3">
+                    <textarea placeholder="Digite aqui a descrição da receita" style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                </div>
+                <a href="/adicionar_receita" class="btn btn-link mt-2">Adicionar Receita</a>
+            </form>
+
+            <hr>
+
+            <!-- Recomendação da ficha -->
+            <div class="mt-4">
+                <h5>Recomendar Dieta</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="recomendacao_ficha" id="paraTodos" value="todos">
+                    <label class="form-check-label" for="paraTodos">Para todos</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="recomendacao_ficha" id="personalizada" value="personalizada">
+                    <label class="form-check-label" for="personalizada">Personalizada</label>
+                </div>
+            </div>
+
+            <div class="form-group mt-4">
+                <h4>Escolher Alunos</h4>
+                <label for="student-name">Selecione o aluno:</label>
+                <select id="student-name" class="form-control" style="width: 100%; margin-bottom: 10px;">
+                    <option value="">Escolha um aluno</option>
+                    <option value="1">Aluno 1</option>
+                    <option value="2">Aluno 2</option>
+                    <option value="3">Aluno 3</option>
+                </select>
+            </div>
+
+            <div class="form-buttons mt-3">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-danger">Cancelar</button>
+            </div>
+        </div>
     </div>
-        <h3 style="margin-top: 10px;">Selecionar receitas</h3>
-        <div class="table-responsive">
-                <table class="table table-bordered table-striped" style="width: 100%; margin-top: 10px;">
-                        <thead>
-                                <tr>
-                                        <th>Selecionar</th>
-                                        <th>Nome</th>
-                                        <th>Tipo</th>
-                                        <th>Data</th>
-                                    </tr>
-                            </thead>
-                        <tbody>
-                                <tr>
-                                        <td style="width: 5%; text-align: center;">
-                                                <input type="checkbox" />
-                                            </td>
-                                        <td>Dieta Low Carb</td>
-                                        <td>Dieta baixa em carboidratos</td>
-                                        <td>05/01/24</td>
-                                    </tr>
-                                <tr>
-                                        <td style="width: 5%; text-align: center;">
-                                                <input type="checkbox" />
-                                            </td>
-                                        <td>Dieta vegana</td>
-                                        <td>Consumo de alimentos de origem vegetal</td>
-                                        <td>18/02/24</td>
-                                    </tr>
-                                <tr>
-                                        <td style="width: 5%; text-align: center;">
-                                                <input type="checkbox" />
-                                            </td>
-                                        <td>Dieta hipercalórica</td>
-                                        <td>Para ganho de massa muscular</td>
-                                        <td>03/03/24</td>
-                                    </tr>
-                                <!-- Mais linhas seguem o mesmo padrão -->
-                                <tr>
-                                        <td style="width: 5%; text-align: center;">
-                                                <input type="checkbox" />
-                                            </td>
-                                        <td>Dieta Flexível</td>
-                                        <td>Controle de calorias e macronutrientes</td>
-                                        <td>14/04/24</td>
-                                    </tr>
-                                <tr>
-                                        <td style="width: 5%; text-align: center;">
-                                                <input type="checkbox" />
-                                            </td>
-                                        <td>Dieta proteica</td>
-                                        <td>Alto consumo de proteínas</td>
-                                        <td>27/05/24</td>
-                                    </tr>
-                            </tbody>
-                    </table>
-            </div>
-
-        <h3 style="margin-top: 20px;">Adicionar Aluno</h3>
-        <div class="form-group" style="margin-top: 10px;">
-                <label for="student-name">Selecione o aluno:</label>
-                <select id="student-name" class="form-control" style="width: 100%; margin-bottom: 10px;">
-                        <option value="">Escolha um aluno</option>
-                        <option value="1">Aluno 1</option>
-                        <option value="2">Aluno 2</option>
-                        <option value="3">Aluno 3</option>
-                    </select>
-            </div>
-        <div class="form-buttons" style="margin-top: 10px;">
-                <button class="cancel-btn">Cancelar</button>
-                <button class="submit-btn">Salvar</button>
-            </div>
 </div>
 
 {% endblock %}
