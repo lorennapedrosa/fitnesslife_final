@@ -39,14 +39,14 @@ async def checar_autorizacao(request: Request):
     if not usuario: return None        
     area_do_cliente = request.url.path.startswith("/cliente")
     area_do_nutricionista = request.url.path.startswith("/nutricionista")
-    area_do_educador_fisico = request.url.path.startswith("/educadorfisico")
-    if (area_do_cliente or area_do_nutricionista or area_do_educador_fisico) and not usuario.perfil:
+    area_do_personal = request.url.path.startswith("/personal")
+    if (area_do_cliente or area_do_nutricionista or area_do_personal) and not usuario.perfil:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     if area_do_cliente and usuario.perfil != 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     if area_do_nutricionista and usuario.perfil != 2:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    if area_do_educador_fisico and usuario.perfil != 3:
+    if area_do_personal and usuario.perfil != 3:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
 def obter_hash_senha(senha: str) -> str:

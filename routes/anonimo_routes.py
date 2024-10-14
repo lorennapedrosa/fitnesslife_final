@@ -1,6 +1,5 @@
-from datetime import time
 from fastapi import APIRouter, Form, Request, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from models.usuario_model import Usuario
 from repositories.usuario_repo import UsuarioRepo
@@ -14,14 +13,22 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/")
 async def get_root(request: Request):
     usuario = request.state.usuario if hasattr(request.state, "usuario") else None
-    if usuario:   
-        if usuario.perfil == 1:
+    
+    # Se não houver usuário ou se o email estiver ausente, redireciona para a página de login
+    if not usuario or not usuario.email:
+        return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
+    
+    # Usuário autenticado, redireciona para a página correspondente ao perfil
+    match usuario.perfil:
+        case 1:
             return RedirectResponse("/cliente", status_code=status.HTTP_303_SEE_OTHER)
-        if usuario.perfil == 2:
+        case 2:
             return RedirectResponse("/nutricionista", status_code=status.HTTP_303_SEE_OTHER)
-        if usuario.perfil == 3:
+        case 3:
             return RedirectResponse("/personal", status_code=status.HTTP_303_SEE_OTHER)
-    return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
+        case _:
+            return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
+
     
 @router.get("/login")
 async def get_login(request: Request):
@@ -33,11 +40,11 @@ async def post_login(
     senha: str = Form(...)):
     usuario = UsuarioRepo.checar_credenciais(email, senha)
     if usuario is None:
-        response = RedirectResponse("pages/anonimo/login", status_code=status.HTTP_303_SEE_OTHER)
+        response = RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
         return response
-    token = criar_token(usuario.id, usuario.nome, usuario.email, usuario.perfil)
+    token = criar_token(usuario[0], usuario[1], usuario[2], usuario[3])
     nome_perfil = None
-    match (usuario.perfil):
+    match (usuario[3]):
         case 1: nome_perfil = "cliente"
         case 2: nome_perfil = "nutricionista"
         case 3: nome_perfil = "personal"
@@ -64,21 +71,44 @@ async def post_inscrever(
     senha: str = Form(...),
     confsenha: str = Form(...),
     perfil: int = Form(...)):
+    
+    # Verifica se as senhas correspondem
     if senha != confsenha:
-        return RedirectResponse("pages/anonimo/inscrever", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse("/inscrever", status_code=status.HTTP_303_SEE_OTHER)
+    
+    # Verifica se o perfil é válido
+    if perfil not in [1, 2, 3]:
+        return RedirectResponse("/inscrever", status_code=status.HTTP_400_BAD_REQUEST)
+
+    # Verifica se o email já está cadastrado
+    usuario_existente = UsuarioRepo.buscar_por_email(email)
+    if usuario_existente:
+        return RedirectResponse("/inscrever", status_code=status.HTTP_409_CONFLICT)
+    
+    # Cria o hash da senha
     senha_hash = obter_hash_senha(senha)
+
+    # Cria o objeto usuário e insere no banco de dados
     usuario = Usuario(
         nome=nome,
         email=email,
         senha=senha_hash,
-        perfil=perfil)
-    UsuarioRepo.inserir(usuario)
-    return RedirectResponse("pages/anonimo/login", status_code=status.HTTP_303_SEE_OTHER)
+        perfil=perfil
+    )
+    try:
+        UsuarioRepo.inserir(usuario)
+    except Exception as e:
+        print(f"Erro ao inserir usuário: {e}")
+        return RedirectResponse("/inscrever", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # Redireciona para a página de login
+    return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
+
 
 @router.get("/recuperar_senha")
 async def get_recuperar_senha(request: Request):
-    return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html")
+    return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html", {"request": request})
 
-@router.get("/index")
-async def get_index(request: Request):
-    return templates.TemplateResponse("pages/anonimo/index.html")
+
+
+
