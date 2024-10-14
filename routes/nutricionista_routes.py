@@ -46,6 +46,10 @@ async def get_planos(request: Request):
 async def get_artigos(request: Request):
     return templates.TemplateResponse("pages/nutricionista/artigos_nutricionista.html", {"request": request})
 
+@router.get("/dietas")  
+async def get_dietas_postadas(request: Request):
+    return templates.TemplateResponse("pages/nutricionista/dietas_nutricionista.html", {"request": request})
+
 @router.get("/dietas_postadas")  
 async def get_dietas_postadas(request: Request):
     return templates.TemplateResponse("pages/nutricionista/dietas_postadas_nutricionista.html", {"request": request})
@@ -56,8 +60,12 @@ async def get_receitas_postadas(request: Request):
 
 @router.get("/artigos_postados")  
 async def get_artigos_postados(request: Request):
-    return templates.TemplateResponse("pages/personal/artigos_postados_nutricionista.html", {"request": request})
+    return templates.TemplateResponse("pages/nutricionista/artigos_postados_nutricionista.html", {"request": request})
 
 @router.get("/meusalunos")  
 async def get_meusalunos(request: Request):
-    return templates.TemplateResponse("pages/personal/meus_alunos_nutricionista.html", {"request": request})
+    return templates.TemplateResponse("pages/nutricionista/meus_alunos_nutricionista.html", {"request": request})
+
+@router.get("/receitas")  
+async def get_meusalunos(request: Request):
+    return templates.TemplateResponse("pages/nutricionista/receitas_nutricionista.html", {"request": request})
