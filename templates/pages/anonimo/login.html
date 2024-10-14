@@ -45,6 +45,11 @@
     .text-center a {
         color: #007bff; /* Cor do link */
     }
+
+    .error {
+        color: red; /* Cor para a mensagem de erro */
+        margin-bottom: 15px; /* Espaçamento abaixo da mensagem de erro */
+    }
 </style>
 
 <div class="bg-cover">
@@ -52,6 +57,13 @@
         <div class="content">
             <h1 class="text-center">Login</h1>
             <p class="text-center">Preencha os dados abaixo para acessar o Fitness Life</p>
+
+            {% if request.query_params["erro"] == "credenciais_invalidas" %}
+                <div class="error">
+                    <p>Email ou senha inválidos. Tente novamente.</p>
+                </div>
+            {% endif %}
+
             <form action="/post_login" method="post">
                 <input type="email" class="form-control" name="email" placeholder="Email" required>
                 <input type="password" class="form-control" name="senha" placeholder="Senha" required>

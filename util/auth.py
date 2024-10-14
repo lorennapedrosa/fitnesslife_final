@@ -25,6 +25,7 @@ async def obter_usuario_logado(request: Request) -> dict:
         return usuario
     except KeyError:
         return None
+    
 
 async def checar_autenticacao(request: Request, call_next):
     usuario = await obter_usuario_logado(request)

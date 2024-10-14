@@ -10,6 +10,7 @@ router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
 
+
 @router.get("/")
 async def get_root(request: Request):
     usuario = request.state.usuario if hasattr(request.state, "usuario") else None
@@ -26,13 +27,15 @@ async def get_root(request: Request):
 async def get_login(request: Request):
     return templates.TemplateResponse("pages/anonimo/login.html", {"request": request})
 
+
 @router.post("/post_login")
 async def post_login(
     email: str = Form(...), 
     senha: str = Form(...)):
     usuario = UsuarioRepo.checar_credenciais(email, senha)
     if usuario is None:
-        response = RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+        print(f"Login falhou para o email: {email}")
+        response = RedirectResponse("/login?erro=credenciais_invalidas", status_code=status.HTTP_303_SEE_OTHER)
         return response
     token = criar_token(usuario[0], usuario[1], usuario[2], usuario[3])
     nome_perfil = None
@@ -41,16 +44,18 @@ async def post_login(
         case 2: nome_perfil = "nutricionista"
         case 3: nome_perfil = "personal"
         case _: nome_perfil = ""
-    
     response = RedirectResponse(f"/{nome_perfil}", status_code=status.HTTP_303_SEE_OTHER)    
     response.set_cookie(
         key=NOME_COOKIE_AUTH,
         value=token,
-        max_age=3600*24*365*10,
+        max_age=3600*24*365*10,  # Token com validade longa
         httponly=True,
         samesite="lax"
     )
+    print(f"Login bem-sucedido para o email: {email}")
     return response
+
+
 
 @router.get("/inscrever")
 async def get_inscrever(request: Request):
@@ -76,12 +81,5 @@ async def post_inscrever(
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/sair")
-async def get_sair():
-    response = RedirectResponse("/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
-    response.set_cookie(
-        key=NOME_COOKIE_AUTH,
-        value="",
-        max_age=1,
-        httponly=True,
-        samesite="lax")
-    return response    
+async def get_login(request: Request):
+    return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
