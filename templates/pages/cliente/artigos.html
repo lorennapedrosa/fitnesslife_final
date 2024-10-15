@@ -110,13 +110,25 @@
         margin-right: 10px;
         font-size: 14px;
     }
+
+    .read-more {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 1em;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .read-more:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <!-- Layout da barra de dietas -->
 <div class="header">
     <h1>Artigos</h1>
     <div class="search-bar">
-        <input type="text" placeholder="Pesquisar Dietas">
+        <input type="text" placeholder="Pesquisar Artigos">
         <button type="submit">🔍</button>
     </div>
 </div>
@@ -146,8 +158,9 @@
                 </div>
             </div>
             <p class="article-text">
-                Quer aumentar a força e definir os bíceps? Nosso treino especialmente desenvolvido para os bíceps é a solução perfeita!...
+                Quer aumentar a força e definir os bíceps? Nosso treino especialmente desenvolvido para os bíceps é a solução perfeita! Neste artigo, vamos explorar as melhores técnicas e exercícios que você pode incorporar ao seu plano de treino. Desde o levantamento de pesos até o uso de máquinas, descubra como maximizar os resultados e obter braços mais fortes e definidos.
             </p>
+            <p><a href="/static/pdfs/artigo4.pdf" class="read-more" download>Clique aqui</a> para ter acesso ao artigo completo</p>
         </div>
         <!-- Artigo 2 -->
         <div class="col-md-12 article-card">
@@ -160,9 +173,43 @@
                 </div>
             </div>
             <p class="article-text">
-                Quer ganhar massa muscular de forma saudável? Nosso dieta especialmente desenvolvida para o ganho de massa é a solução perfeita!...
+                Ganhar massa muscular é uma jornada que exige tanto esforço físico quanto uma alimentação adequada. Neste artigo, mostramos como uma dieta balanceada pode ajudar no ganho de massa muscular de forma saudável e eficaz. Descubra os alimentos que são essenciais para construir músculos e otimizar o seu desempenho nos treinos.
             </p>
+            <p><a href="/static/pdfs/artigo4.pdf" class="read-more" download>Clique aqui</a> para ter acesso ao artigo completo</p>
         </div>
+
+        <!-- Artigo 3 -->
+        <div class="col-md-12 article-card">
+            <div class="article-header">
+                <img src="/static/img/usuario2.png" alt="Ricardo - Personal Trainer" class="article-image">
+                <div>
+                    <div class="tag">Treino</div>
+                    <div class="tag">Cardio</div>
+                    <h2 class="article-title">Treino de Cardio para Perda de Peso: Dicas e Estratégias</h2>
+                </div>
+            </div>
+            <p class="article-text">
+                Se o seu objetivo é perder peso, o treino cardiovascular é um dos principais aliados. Neste artigo, explicamos como os exercícios de cardio, como corrida, ciclismo e natação, ajudam a queimar gordura e melhorar a resistência cardiovascular. Aprenda também quais são os melhores horários e durações para obter resultados rápidos e duradouros.
+            </p>
+            <p><a href="/static/pdfs/artigo4.pdf" class="read-more" download>Clique aqui</a> para ter acesso ao artigo completo</p>
+        </div>
+
+        <!-- Artigo 4 -->
+        <div class="col-md-12 article-card">
+            <div class="article-header">
+                <img src="/static/img/usuario3.png" alt="Sandra - Coach de Bem-Estar" class="article-image">
+                <div>
+                    <div class="tag">Saúde</div>
+                    <div class="tag">Bem-estar</div>
+                    <h2 class="article-title">Como Melhorar o Bem-Estar Mental Durante a Quarentena</h2>
+                </div>
+            </div>
+            <p class="article-text">
+                A quarentena tem sido um desafio para o bem-estar mental de muitas pessoas. Neste artigo, damos dicas práticas sobre como manter a saúde mental em tempos difíceis. Explore técnicas de meditação, yoga, e estratégias de autocuidado que podem ajudar a aliviar o estresse e melhorar a qualidade do sono, promovendo uma vida mais equilibrada e saudável.
+            </p>
+            <p><a href="/static/pdfs/artigo1.pdf" class="read-more" download>Clique aqui</a> para ter acesso ao artigo completo</p>
+        </div>
+
     </div>
 </div>
 {% endblock %}

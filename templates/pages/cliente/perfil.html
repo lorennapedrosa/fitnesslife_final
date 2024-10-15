@@ -1,15 +1,18 @@
-{% extends "shared/base.html" %}
-{% block subtitulo %}Minha Página{% endblock %}
+{% extends "shared/base_nutricionista.html" %}
+{% block subtitulo %}Página Inicial Nutricionista{% endblock %}
 {% block conteudo %}
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-12 text-center my-auto">
-            <h1>Olá{{ nome_usuario }}!</h1>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="btn-group-vertical w-100" role="group" aria-label="Basic example">
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body text-center">
+            <!-- Foto do perfil -->
+            <div class="mb-3">
+                <img src="/static/img/usuario.png" alt="Foto de perfil" class="rounded-circle" width="100">
+            </div>
+            <!-- Saudação -->
+            <h3 class="mb-4">Olá</h3>
+
+            <!-- Botões de Ação -->
+            <div class="list-group">
                 <a href="/cliente/receitas" class="btn btn-outline-secondary mb-2">Receitas</a>
                 <a href="/cliente/exercicios" class="btn btn-outline-secondary mb-2">Exercícios</a>
                 <a href="/cliente/artigos" class="btn btn-outline-secondary mb-2">Artigos</a>
@@ -17,18 +20,11 @@
                 <a href="/cliente/professores" class="btn btn-outline-secondary mb-2">Professores</a>
                 <a href="/cliente/calendario" class="btn btn-outline-secondary mb-2">Calendário</a>
             </div>
-        </div>
-    </div>
 
-    <div class="row mt-5">
-        <div class="col-12 text-center">
-            <i class="bi bi-cup-straw fs-1"></i>
-            <p class="fs-4">Consumo de água: <span id="agua-consumo">0</span> ml</p>
-            <div class="btn-group" role="group" aria-label="Water intake options">
-                <button type="button" class="btn btn-primary" onclick="adicionarAgua(250)">+250ml</button>
-                <button type="button" class="btn btn-primary" onclick="adicionarAgua(500)">+500ml</button>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customWaterModal">Adição Personalizada</button>
-            </div>
+            <!-- Botão para abrir o modal -->
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#customWaterModal">
+                Adicionar Água Personalizada
+            </button>
         </div>
     </div>
 </div>
@@ -54,4 +50,12 @@
         </div>
     </div>
 </div>
+
+<script>
+function adicionarAguaPersonalizada() {
+    var quantidade = document.getElementById("customWaterInput").value;
+    alert("Você adicionou " + quantidade + "ml de água!");
+    // Aqui você pode adicionar a lógica para processar o valor inserido.
+}
+</script>
 {% endblock %}

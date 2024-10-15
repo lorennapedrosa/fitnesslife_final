@@ -1,39 +1,170 @@
 {% extends "shared/base.html" %}
 {% block subtitulo %}Calendário{% endblock %}
 {% block conteudo %}
-<div class="container my-5">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h1>Calendário</h1>
-            <p>Veja e registre seus treinos e refeições diários.</p>
+<div class="container">
+    <h2 class="mt-5 text-center">Calendário</h2>
+
+    <div class="row mt-4">
+        <!-- Calendário -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>October 2024</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td><td></td><td></td><td></td><td></td><td>1</td><td>2</td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+                            </tr>
+                            <tr>
+                                <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+                            </tr>
+                            <tr>
+                                <td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+                            </tr>
+                            <tr>
+                                <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+                            </tr>
+                            <tr>
+                                <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atividades do dia -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Hoje 07/10/2024:</h5>
+                    <div class="mb-3">
+                        <div class="alert alert-danger">Treino de bíceps e tríceps</div>
+                        <small class="text-muted">Realizar entre 14h e 16h</small>
+                    </div>
+                    <div class="alert alert-light">Nenhuma atividade marcada</div>
+                    <div class="alert alert-light">Nenhuma atividade marcada</div>
+                    <div class="alert alert-light">Nenhuma atividade marcada</div>
+                </div>
+            </div>
         </div>
     </div>
 
+    
+<!-- Dieta e Recomendado lado a lado -->
+<div class="mt-5">
+    <h4 class="text-primary text-center">Registro de Refeições:</h4>
+    
     <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        {% for day in ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"] %}
-                        <th>{{ day }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for week in month_days %}
-                    <tr>
-                        {% for day in week %}
-                        <td>
-                            {% if day != 0 %}
-                            <a class="btn btn-outline-primary w-100" href="/dia/{{ year }}-{{ '{:02d}'.format(month) }}-{{ '{:02d}'.format(day) }}">{{ day }}</a>
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- Dieta -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <!-- Café da manhã -->
+                        <div class="mb-3">
+                            <label for="cafe-da-manha" class="form-label">Café da manhã:</label>
+                            <input type="text" class="form-control" id="cafe-da-manha" placeholder="O que você comeu?">
+                        </div>
+                        
+                        <!-- Almoço -->
+                        <div class="mb-3">
+                            <label for="almoco" class="form-label">Almoço:</label>
+                            <input type="text" class="form-control" id="almoco" placeholder="O que você comeu?">
+                        </div>
+                        
+                        <!-- Jantar -->
+                        <div class="mb-3">
+                            <label for="jantar" class="form-label">Jantar:</label>
+                            <input type="text" class="form-control" id="jantar" placeholder="O que você comeu?">
+                        </div>
+                        
+                        <!-- Lanches -->
+                        <div class="mb-3">
+                            <label for="lanches" class="form-label">Lanches:</label>
+                            <input type="text" class="form-control" id="lanches" placeholder="O que você comeu?">
+                        </div>
+                        
+                        <!-- Submissão -->
+                        <button type="submit" class="btn btn-primary">Salvar Refeições</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recomendado -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <!-- Café da manhã -->
+                        <div class="mb-3">
+                            <label for="cafe-da-manha-recomendado" class="form-label">Café da manhã: Dieta recomenda que coma 2 fatias de pão integral, 1 ovo mexido e 1 copo de suco natural.</label>
+                        </div>
+                        
+                        <!-- Almoço -->
+                        <div class="mb-3">
+                            <label for="almoco-recomendado" class="form-label">Almoço: Dieta recomenda que coma arroz integral, peito de frango grelhado, brócolis no vapor e salada de folhas verdes com azeite de oliva.</label>
+                        </div>
+                        
+                        <!-- Jantar -->
+                        <div class="mb-3">
+                            <label for="jantar-recomendado" class="form-label">Jantar: Dieta recomenda que coma 1 porção de peixe grelhado, batata-doce cozida e uma salada de tomate e pepino.</label>
+                        </div>
+                        
+                        <!-- Lanches -->
+                        <div class="mb-3">
+                            <label for="lanches-recomendado" class="form-label">Lanches: Dieta recomenda que coma uma maçã e um punhado de nozes.</label>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+
+
+<!-- Atividades próximas -->
+<div class="mt-5">
+    <h4 class="text-primary text-center">Atividades Próximas:</h4>
+
+    <!-- Domingo -->
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="text-purple">Domingo 08/10/2024</h5>
+            <p>Treino de pernas e glúteos</p>
+            <p>Alongamento e yoga</p>
+        </div>
+    </div>
+
+    <!-- Segunda -->
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="text-purple">Segunda 09/10/2024</h5>
+            <p>Treino de peito e tríceps</p>
+            <p>Exercícios de alta intensidade para queimar gordura</p>
+            <p>Corrida de 30 minutos</p>
+            <p>Alongamento para recuperação muscular</p>
+        </div>
+    </div>
+</div>
+
+
 </div>
 {% endblock %}

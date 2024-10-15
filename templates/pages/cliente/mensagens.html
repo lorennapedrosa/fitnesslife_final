@@ -22,9 +22,43 @@
         </button>
     </div>
 
+        <!-- Campo de Mensagens -->
+        <div class="chat-container" style="background-color: #e9f5f2; padding: 20px; border-radius: 8px; min-height: 400px;">
+            <!-- Mensagem Recebida -->
+    
+            <!-- Mensagem Enviada -->
+            <div class="d-flex flex-row-reverse mb-3">
+                <div class="p-3 rounded" style="background-color: #bedde9; max-width: 70%; color: #1f1f1f;">
+                    <p>Oi boa noite, tudo bem? Gostaria de tirar dúvidas sobre qual dieta escolher.</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-start mb-3">
+                <img src="/static/img/suelen.png" alt="Suellen Nutricionista" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                <div class="bg-light p-3 rounded" style="max-width: 70%;">
+                    <strong>Suellen Nutricionista</strong>
+                    <p>Olá, boa noite, estou bem e você? Claro, diga o que você deseja alcançar? Perda de peso, talvez ganho de massa?</p>
+                </div>
+            </div>
+    
+            <!-- Outra Mensagem Recebida -->
+            <div class="d-flex align-items-start mb-3">
+                <img src="/static/img/suelen.png" alt="Suellen Nutricionista" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                <div class="bg-light p-3 rounded" style="max-width: 70%;">
+                    <strong>Suellen Nutricionista</strong>
+                    <p>Muito bem graças a Deus. Então, eu gostaria dos dois? Gostaria de perder peso e ganhar massa, já me orientei com um professor sobre exercícios.</p>
+                </div>
+            </div>
+    
+            <!-- Campo para Digitar Mensagem -->
+            <div class="input-group mt-3">
+                <input type="text" class="form-control" placeholder="Escrever mensagem..." aria-label="Escrever mensagem">
+                <button class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+
     <!-- Conversas Recentes -->
     <h2 class="mb-3" style="color: #0056b3;">Conversas Recentes</h2>
-    <div class="list-group">
+    <div class="list-group mb-4">
         <div class="list-group-item list-group-item-action d-flex align-items-start">
             <img src="/static/img/samsulek.png" alt="Cheiratina" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
             <div class="d-flex flex-column">
@@ -47,5 +81,6 @@
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
