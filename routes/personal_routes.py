@@ -73,3 +73,7 @@ async def get_exercicios_postados(request: Request):
 @router.get("/fichas_postadas")  
 async def get_fichas_postadas(request: Request):
     return templates.TemplateResponse("pages/personal/fichas_postadas_personal.html", {"request": request})
+
+@router.get("/mensagens")  
+async def get_meusalunos(request: Request):
+    return templates.TemplateResponse("pages/personal/mensagens_personal.html", {"request": request})

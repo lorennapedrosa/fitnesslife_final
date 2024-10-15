@@ -73,3 +73,7 @@ async def get_meusalunos(request: Request):
 @router.get("/historico_alunos")  
 async def get_meusalunos(request: Request):
     return templates.TemplateResponse("pages/nutricionista/historico_alunos_nutricionista.html", {"request": request})
+
+@router.get("/mensagens")  
+async def get_meusalunos(request: Request):
+    return templates.TemplateResponse("pages/nutricionista/mensagens_nutricionista.html", {"request": request})
