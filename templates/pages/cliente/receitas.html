@@ -116,6 +116,60 @@
         font-style: italic;
         color: #555;
     }
+
+    /* Ingredientes e modo de preparo lado a lado */
+    .recipe-content {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .recipe-section {
+        width: 48%;
+    }
+
+    /* Estilos das tags e checkbox */
+    .like-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .like-checkbox {
+        width: 24px;
+        height: 24px;
+        appearance: none;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .like-checkbox:checked {
+        background-color: #ff6b6b;
+        border-color: #ff6b6b;
+    }
+
+    .like-checkbox:before {
+        content: "❤";
+        position: absolute;
+        top: -2px;
+        left: 1px;
+        color: #fff;
+        font-size: 20px;
+        display: none;
+    }
+
+    .like-checkbox:checked:before {
+        display: block;
+    }
+
+    .tags {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #666;
+    }
+
 </style>
 
 <!-- Layout da barra de dietas -->
@@ -138,7 +192,6 @@
     <a href="#">Gestão de tempo</a>
 </div>
 
-<!-- Artigos abaixo da barra de navegação -->
 <!-- Lista de Receitas -->
 <div class="container py-4">
     <div class="row">
@@ -152,22 +205,44 @@
                     <h2 class="article-title">Pizza de Frigideira Fit</h2>
                 </div>
             </div>
-            <p class="article-text">
-                <img src="/static/img/pizza.jpeg" alt="Pizza de Frigideira Fit" style="height: 300px; width: auto; display: block; margin: 0 auto;">
-                <br>Ingredientes:
-            </p>
-            <ul style="list-style-type: none; padding: 0; text-align: left; margin: 0 auto;">
-                <li>1 e 1/2 xícara de chá de farinha de aveia</li>
-                <li>3 colheres de chá de azeite extravirgem</li>
-                <li>Sal a gosto</li>
-                <li>1 colher de chá de fermento químico em pó</li>
-                <li>4 colheres de sopa de água</li>
-                <li>Molho de tomate a gosto</li>
-                <li>Mussarela light ralada a gosto</li>
-                <li>1 tomate em rodelas</li>
-                <li>Orégano a gosto</li>
-            </ul>
-            <p class="preparo">Modo de Preparo: Misture os ingredientes, despeje em uma frigideira aquecida e cozinhe por alguns minutos até dourar.</p>
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 10px;">
+                <img src="/static/img/pizza.jpeg" alt="pizza" style="height: 240px; width: auto; display: block; margin: 0 auto;">
+                <img src="/static/img/receita5.jpeg" alt="pizza" style="height: 240px; width: auto; display: block; margin: 0 auto;">
+            </div>
+            <!-- Ingredientes e modo de preparo lado a lado -->
+            <div class="recipe-content">
+                <div class="recipe-section">
+                    <h3>Ingredientes</h3>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li>1 e 1/2 xícara de chá de farinha de aveia</li>
+                        <li>3 colheres de chá de azeite extravirgem</li>
+                        <li>Sal a gosto</li>
+                        <li>1 colher de chá de fermento químico em pó</li>
+                        <li>4 colheres de sopa de água</li>
+                        <li>Molho de tomate a gosto</li>
+                        <li>Mussarela light ralada a gosto</li>
+                        <li>1 tomate em rodelas</li>
+                        <li>Orégano a gosto</li>
+                    </ul>
+                    <p>Receita perfeita para o fim de semana.</p>
+                </div>
+                <div class="recipe-section">
+                    <h3>Modo de Preparo</h3>
+                    <p class="preparo">Em um recipiente, misture a farinha com o azeite, o sal e o fermento. Mexa bem até obter uma massa homogênea.
+                        Aos poucos, adicione as colheres de água, mexendo sempre para que a massa fique consistente e um pouco grudenta.
+                        Aqueça uma frigideira antiaderente em fogo médio. Despeje a massa na frigideira, acrescente as rodelas de tomate e salpique orégano a gosto. Tampe a frigideira para que o queijo derreta e a pizza termine de cozinhar.
+                        Quando a massa estiver dourada retire do fogo e sirva imediatamente.</p>
+                </div>
+            </div>
+
+            <!-- Like e tags -->
+            <div class="like-container">
+                <input type="checkbox" class="like-checkbox" id="like1">
+                <label for="like1"></label>
+                <div class="tags">
+                    Tags: #Fit, #Pizza
+                </div>
+            </div>
         </div>
     </div>
 
@@ -182,26 +257,48 @@
                     <h2 class="article-title">Bobó de Camarão</h2>
                 </div>
             </div>
-            <p class="article-text">
-                <img src="/static/img/receita2.png" alt="Bobó de Camarão" style="height: 300px; width: auto; display: block; margin: 0 auto;">
-                <br>Ingredientes:
-            </p>
-            <ul style="list-style-type: none; padding: 0; text-align: left; margin: 0 auto;">
-                <li>500g de mandioca</li>
-                <li>200ml de leite de coco light</li>
-                <li>500ml de água</li>
-                <li>1/2 pimentão vermelho</li>
-                <li>1/2 pimentão amarelo</li>
-                <li>1 cebola roxa</li>
-                <li>3 colheres de sopa de coentro fresco</li>
-                <li>500g de camarão cinza médio</li>
-                <li>2 colheres de chá de sal</li>
-                <li>1 colher de sopa de óleo de girassol</li>
-                <li>1 colher de café de azeite de dendê</li>
-                <li>2 colheres de sopa de extrato de tomate</li>
-                <li>2 tomates</li>
-            </ul>
-            <p class="preparo">Modo de Preparo: Cozinhe a mandioca, bata com os outros ingredientes, adicione o camarão e cozinhe até tudo ficar bem misturado.</p>
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 10px;">
+                <img src="/static/img/receita2.png" alt="Bobó de Camarão" style="height: 240px; width: auto; display: block; margin: 0 auto;">
+                <img src="/static/img/receita4.png" alt="Bobó de Camarão" style="height: 240px; width: auto; display: block; margin: 0 auto;">
+            </div>
+            <!-- Ingredientes e modo de preparo lado a lado -->
+            <div class="recipe-content">
+                <div class="recipe-section">
+                    <h3>Ingredientes</h3>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li>500g de mandioca</li>
+                        <li>200ml de leite de coco light</li>
+                        <li>500ml de água</li>
+                        <li>1/2 pimentão vermelho</li>
+                        <li>1/2 pimentão amarelo</li>
+                        <li>1 cebola roxa</li>
+                        <li>3 colheres de sopa de coentro fresco</li>
+                        <li>500g de camarão cinza médio</li>
+                        <li>2 colheres de chá de sal</li>
+                        <li>1 colher de sopa de óleo de girassol</li>
+                        <li>1 colher de café de azeite de dendê</li>
+                        <li>2 colheres de sopa de extrato de tomate</li>
+                        <li>2 tomates</li>
+                    </ul>
+                    <p>Essa receita além de deliciosa é super saudável. Aproveite</p>
+                </div>
+                <div class="recipe-section">
+                    <h3>Modo de Preparo</h3>
+                    <p class="preparo">Descasque e cozinhe a mandioca em uma panela grande. Escorra e reserve a água do cozimento. Depois, bata a mandioca no liquidificador com um pouco da água do cozimento até formar um purê bem liso.
+                        Em uma panela separada, refogue a cebola roxa picada junto com os pimentõesaté que fiquem macios. Adicione os tomates picados e o extrato de tomate. Acrescente o camarão limpo ao refogado e deixe cozinhar. Em seguida, acrescente o leite de coco e o azeite de dendê, ajustando o sal conforme o gosto.
+                        Cozinhe em fogo baixo, mexendo sempre, até que o bobó fique com uma textura cremosa e os sabores estejam bem integrados.
+                        Finalize com coentro fresco picado e sirva o bobó quente, acompanhado de arroz branco ou farinha de mandioca.</p>
+                </div>
+            </div>
+
+            <!-- Like e tags -->
+            <div class="like-container">
+                <input type="checkbox" class="like-checkbox" id="like2">
+                <label for="like2"></label>
+                <div class="tags">
+                    Tags: #Frutos do mar, #Camarão
+                </div>
+            </div>
         </div>
     </div>
 </div>

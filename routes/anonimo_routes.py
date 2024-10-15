@@ -83,3 +83,11 @@ async def post_inscrever(
 @router.get("/sair")
 async def get_login(request: Request):
     return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
+
+@router.get("/esqueceu_sua_senha")
+async def get_login(request: Request):
+    return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html", {"request": request})
+
+@router.get("/redefinir_senha")
+async def get_login(request: Request):
+    return templates.TemplateResponse("pages/anonimo/redefinir_senha.html", {"request": request})
