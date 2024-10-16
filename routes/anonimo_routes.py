@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="templates")
 async def get_root(request: Request):
     usuario = request.state.usuario if hasattr(request.state, "usuario") else None
     if not usuario or not usuario.email:
-        return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)        
+        return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
     if usuario.perfil == 1:
         return RedirectResponse("/cliente", status_code=status.HTTP_303_SEE_OTHER)
     if usuario.perfil == 2:
