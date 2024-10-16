@@ -1,0 +1,152 @@
+{% extends "shared/base.html" %}
+{% block subtitulo %}Alimentação{% endblock %}
+{% block conteudo %}
+<div class="container mt-5">
+    <!-- Navegação de Data -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <button class="btn btn-outline-secondary" onclick="changeDate(-1)">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="d-flex align-items-center">
+            <button class="btn btn-outline-secondary me-2" onclick="setDateToToday()">Hoje</button>
+            <!-- Botão do calendário redirecionando para /cliente/calendario -->
+            <a href="/cliente/calendario" class="btn btn-outline-secondary">
+                <i class="bi bi-calendar"></i>
+            </a>
+        </div>
+        <button class="btn btn-outline-secondary" onclick="changeDate(1)">
+            <i class="bi bi-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- Macronutrientes -->
+    <div class="d-flex justify-content-between text-center mb-4">
+        <div>
+            <span>Carboidratos(g)</span><br>
+            <span id="carbs" class="text-primary">0/244</span>
+        </div>
+        <div>
+            <span>Proteínas(g)</span><br>
+            <span id="proteins" class="text-primary">0/98</span>
+        </div>
+        <div>
+            <span>Gorduras(g)</span><br>
+            <span id="fats" class="text-primary">0/65</span>
+        </div>
+    </div>
+
+    <!-- Refeições -->
+    <div class="row">
+        <div class="col-6 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-header bg-success text-white">
+                    Café da Manhã
+                </div>
+                <div class="card-body">
+                    <ul id="breakfast-list" class="list-unstyled mb-3">
+                        <!-- Alimentos adicionados aparecerão aqui -->
+                    </ul>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="addFood('breakfast')">
+                        <i class="bi bi-plus-circle"></i> Adicionar alimentos
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-header bg-success text-white">
+                    Almoço
+                </div>
+                <div class="card-body">
+                    <ul id="lunch-list" class="list-unstyled mb-3">
+                        <!-- Alimentos adicionados aparecerão aqui -->
+                    </ul>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="addFood('lunch')">
+                        <i class="bi bi-plus-circle"></i> Adicionar alimentos
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-header bg-success text-white">
+                    Jantar
+                </div>
+                <div class="card-body">
+                    <ul id="dinner-list" class="list-unstyled mb-3">
+                        <!-- Alimentos adicionados aparecerão aqui -->
+                    </ul>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="addFood('dinner')">
+                        <i class="bi bi-plus-circle"></i> Adicionar alimentos
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-header bg-success text-white">
+                    Lanches
+                </div>
+                <div class="card-body">
+                    <ul id="snack-list" class="list-unstyled mb-3">
+                        <!-- Alimentos adicionados aparecerão aqui -->
+                    </ul>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="addFood('snack')">
+                        <i class="bi bi-plus-circle"></i> Adicionar alimentos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calorias Totais -->
+    <div class="text-center mt-4">
+        <span>Kcal Totais</span><br>
+        <span id="total-calories" class="text-primary">0/1950</span>
+    </div>
+</div>
+
+<!-- Scripts para interação na página -->
+<script>
+    let totalCalories = 0;
+    let totalCarbs = 0;
+    let totalProteins = 0;
+    let totalFats = 0;
+
+    function addFood(meal) {
+        const foodName = prompt('Digite o nome do alimento:');
+        const calories = parseInt(prompt('Digite as calorias:'), 10);
+        const carbs = parseInt(prompt('Digite os carboidratos (g):'), 10);
+        const proteins = parseInt(prompt('Digite as proteínas (g):'), 10);
+        const fats = parseInt(prompt('Digite as gorduras (g):'), 10);
+
+        if (foodName && !isNaN(calories) && !isNaN(carbs) && !isNaN(proteins) && !isNaN(fats)) {
+            totalCalories += calories;
+            totalCarbs += carbs;
+            totalProteins += proteins;
+            totalFats += fats;
+
+            document.getElementById(meal + '-list').innerHTML += `<li>${foodName} - ${calories} Kcal</li>`;
+            updateTotals();
+        } else {
+            alert('Por favor, insira valores válidos.');
+        }
+    }
+
+    function updateTotals() {
+        document.getElementById('total-calories').innerText = `${totalCalories}/1950`;
+        document.getElementById('carbs').innerText = `${totalCarbs}/244`;
+        document.getElementById('proteins').innerText = `${totalProteins}/98`;
+        document.getElementById('fats').innerText = `${totalFats}/65`;
+    }
+
+    function setDateToToday() {
+        alert('Data definida para hoje!');
+    }
+
+    function changeDate(offset) {
+        alert('Mudando a data por ' + offset + ' dias.');
+    }
+
+</script>
+{% endblock %}
