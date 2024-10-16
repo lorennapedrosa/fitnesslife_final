@@ -1,3 +1,1 @@
 # FitnessLife
-
-# O CADASTRO PAROU DE FUNCIONAR DO NADA.
