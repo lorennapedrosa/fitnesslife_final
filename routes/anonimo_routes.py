@@ -81,8 +81,15 @@ async def post_inscrever(
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/sair")
-async def get_login(request: Request):
-    return templates.TemplateResponse("pages/anonimo/index.html", {"request": request})
+async def get_sair():
+    response = RedirectResponse("/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    response.set_cookie(
+        key=NOME_COOKIE_AUTH,
+        value="",
+        max_age=1,
+        httponly=True,
+        samesite="lax")
+    return response  
 
 @router.get("/esqueceu_sua_senha")
 async def get_login(request: Request):
