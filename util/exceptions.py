@@ -12,7 +12,7 @@ def configurar_excecoes(app: FastAPI):
     async def unauthorized_exception_handler(request: Request, _):
         return_url = f"?return_url={request.url.path}"
         response = RedirectResponse(
-            f"/entrar{return_url}", status_code=status.HTTP_302_FOUND
+            f"/login{return_url}", status_code=status.HTTP_302_FOUND
         )
         adicionar_mensagem_erro(
             response,
@@ -25,7 +25,7 @@ def configurar_excecoes(app: FastAPI):
         usuario = await obter_usuario_logado(request)
         return_url = f"?return_url={request.url.path}"
         response = RedirectResponse(
-            f"/entrar{return_url}", status_code=status.HTTP_302_FOUND
+            f"/login{return_url}", status_code=status.HTTP_302_FOUND
         )
         adicionar_mensagem_erro(
             response,
@@ -38,7 +38,7 @@ def configurar_excecoes(app: FastAPI):
         request: Request, usuario=Depends(obter_usuario_logado)
     ):
         return templates.TemplateResponse(
-            "pages/404.html", {"request": request, "usuario": usuario}
+            "pages/anonimo/404.html", {"request": request, "usuario": usuario}
         )
 
     @app.exception_handler(HTTPException)
@@ -53,7 +53,7 @@ def configurar_excecoes(app: FastAPI):
             "detail": f"Erro na requisição HTTP:<br>{type(ex).__name__}: {ex}",
         }
         return templates.TemplateResponse(
-            "pages/erro.html", view_model, status_code=ex.status_code
+            "pages/anonimo/erro.html", view_model, status_code=ex.status_code
         )
 
     @app.exception_handler(Exception)
@@ -68,5 +68,5 @@ def configurar_excecoes(app: FastAPI):
             "detail": f"Erro interno do servidor:<br>{type(ex).__name__}: {ex}",
         }
         return templates.TemplateResponse(
-            "pages/erro.html", view_model, status_code=500
+            "pages/anonimo/erro.html", view_model, status_code=500
         )
