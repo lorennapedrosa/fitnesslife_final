@@ -1,66 +1,102 @@
 from typing import Optional
 from models.usuario_model import Usuario
 from sql.usuario_sql import *
-from util.auth import conferir_senha
 from util.db import obter_conexao
 
 
 class UsuarioRepo:
-    @classmethod
-    def criar_tabela(cls):
+
+    @staticmethod
+    def criar_tabela():
         with obter_conexao() as db:
             cursor = db.cursor()
             cursor.execute(SQL_CRIAR_TABELA)
 
-    @classmethod
-    def inserir(cls, usuario: Usuario) -> bool:
+    @staticmethod
+    def inserir(usuario: Usuario) -> Optional[Usuario]:
         with obter_conexao() as db:
             cursor = db.cursor()
-            resultado = cursor.execute(SQL_INSERIR_USUARIO,
-                (usuario.nome,
-                 usuario.email,
-                 usuario.senha,
-                 usuario.perfil))
-            return resultado.rowcount > 0
-        
-    @classmethod
-    def atualizar_dados(cls, nome: str, email: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(
-                SQL_ATUALIZAR_DADOS, (nome, email, email))
-            return resultado.rowcount > 0
-    
-    @classmethod
-    def atualizar_senha(cls, email: str, senha: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(
-                SQL_ATUALIZAR_SENHA, (senha, email))
-            return resultado.rowcount > 0
-    
-    
-    @classmethod
-    def excluir_usuario(cls, email: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            resultado = cursor.execute(
-                SQL_EXCLUIR_USUARIO, (email,))
-            return resultado.rowcount > 0    
-        
-    @classmethod
-    def checar_credenciais(cls, email: str, senha: str) -> Optional[tuple]:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            dados = cursor.execute(
-                SQL_CHECAR_CREDENCIAIS, (email,)).fetchone()
-            if dados:
-                print(f"Dados obtidos do BD para {email}: {dados}")
+            cursor.execute(
+                SQL_INSERIR,
+                (
+                    usuario.nome,
+                    usuario.data_nascimento,
+                    usuario.email,
+                    usuario.telefone,
+                    usuario.senha,
+                    usuario.perfil,
+                ),
+            )
+            if cursor.rowcount == 0:
+                return None
+            usuario.id = cursor.lastrowid
+            return usuario
 
-                # Conferir a senha com bcrypt
-                if conferir_senha(senha, dados[4]):
-                    print(f"Senha válida para o email: {email}")
-                    return (dados[0], dados[1], dados[2], dados[3])
-                else:
-                    print(f"Senha inválida para o email: {email}")
-            return None
+    @staticmethod
+    def obter_senha_por_email(email: str) -> Optional[str]:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_OBTER_SENHA_POR_EMAIL, (email,))
+            dados = cursor.fetchone()
+            if dados is None:
+                return None
+            return dados["senha"]
+
+    @staticmethod
+    def obter_dados_por_email(email: str) -> Optional[Usuario]:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_OBTER_DADOS_POR_EMAIL, (email,))
+            dados = cursor.fetchone()
+            if dados is None:
+                return None
+            return Usuario(**dados)
+        
+    @staticmethod
+    def obter_por_id(id: int) -> Optional[Usuario]:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_OBTER_POR_ID, (id,))
+            dados = cursor.fetchone()
+            if dados is None:
+                return None
+            return Usuario(**dados)
+
+    @staticmethod
+    def atualizar_dados(usuario: Usuario) -> bool:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(
+                SQL_ATUALIZAR_DADOS,
+                (
+                    usuario.nome,
+                    usuario.data_nascimento,
+                    usuario.email,
+                    usuario.telefone,
+                    usuario.id,
+                ),
+            )
+            if cursor.rowcount == 0:
+                return False
+            return True
+
+    @staticmethod
+    def atualizar_senha(id: int, senha: str) -> bool:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_ATUALIZAR_SENHA, (senha, id))
+            return cursor.rowcount > 0
+
+    @staticmethod
+    def atualizar_tema(id: int, tema: str) -> bool:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_ATUALIZAR_TEMA, (tema, id))
+            return cursor.rowcount > 0
+
+    @staticmethod
+    def excluir(id: int) -> bool:
+        with obter_conexao() as db:
+            cursor = db.cursor()
+            cursor.execute(SQL_EXCLUIR, (id,))
+            return cursor.rowcount > 0

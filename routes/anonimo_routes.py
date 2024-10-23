@@ -1,9 +1,13 @@
+from datetime import datetime, timedelta
+import bcrypt
 from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from models.usuario_model import Usuario
 from repositories.usuario_repo import UsuarioRepo
-from util.auth import NOME_COOKIE_AUTH, criar_token, obter_hash_senha
+from util.auth import NOME_COOKIE_AUTH, criar_token_jwt
+from util.mensagens import adicionar_mensagem_erro, adicionar_mensagem_sucesso
+from util.validators import *
 
 
 router = APIRouter()
@@ -37,7 +41,7 @@ async def post_login(
         print(f"Login falhou para o email: {email}")
         response = RedirectResponse("/login?erro=credenciais_invalidas", status_code=status.HTTP_303_SEE_OTHER)
         return response
-    token = criar_token(usuario[0], usuario[1], usuario[2], usuario[3])
+    token = criar_token_jwt(usuario[0], usuario[1], usuario[2], usuario[3])
     nome_perfil = None
     match (usuario[3]):
         case 1: nome_perfil = "cliente"
@@ -66,19 +70,53 @@ async def get_inscrever(request: Request):
     ]
     return templates.TemplateResponse("pages/anonimo/inscrever.html", {"request": request, "options_perfis": options_perfis})
 
-@router.post("/post_inscrever")
+@router.post("/inscrever")
 async def post_inscrever(
-    nome: str = Form(...),
-    email: str = Form(...),
-    senha: str = Form(...),
-    confsenha: str = Form(...),
-    perfil: int = Form(...)):
-    if senha != confsenha:
-        return RedirectResponse("/inscrever", status_code=status.HTTP_303_SEE_OTHER)
-    senha_hash = obter_hash_senha(senha)
-    usuario = Usuario(None, nome, email, senha_hash, perfil)
-    UsuarioRepo.inserir(usuario)
-    return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+    request: Request):
+    # capturar os dados do formulário de cadastro como um dicionário
+    dados = dict(await request.form())
+    # normalizar os dados para tipificar os valores corretamente
+    dados["perfil"] = int(dados["perfil"])
+    # validar dados do formulário
+    erros = {}
+    # validação da senha igual à confirmação da senha
+    if is_matching_fields(dados["senha"], "senha", "Senha", dados["confirmacao_senha"], "Confirmação de Senha", erros):
+        dados.pop("confirmacao_senha")
+    # validação do nome
+    is_person_fullname(dados["nome"], "nome", "Nome", erros)
+    is_size_between(dados["nome"], "nome", "Nome", 5, 64, erros)
+    # validação do email
+    is_email(dados["email"], "email", "E-mail", erros)
+    # validação da senha
+    is_password(dados["senha"], "senha", "Senha", erros)
+    # se tiver erros, monta a exibição dos erros e reexibe a página de inscrição
+    if erros:
+        response = templates.TemplateResponse(
+            "pages/anonimo/inscrever.html",
+            {"request": request, "dados": dados, "erros": erros},
+        )
+        adicionar_mensagem_erro(response, "Há erros no formulário. Corrija-os e tente novamente.")
+        return response
+    # se não tiver erros, criptografa a senha com bcrypt
+    senha_hash = bcrypt.hashpw(dados["senha"].encode(), bcrypt.gensalt())
+    dados["senha"] = senha_hash.decode()
+    # criar um objeto Usuario com os dados do dicionário
+    usuario = Usuario(**dados)
+    # inserir o objeto Usuario no banco de dados usando o repositório
+    usuario = UsuarioRepo.inserir(usuario)
+    # se inseriu com sucesso, redirecionar para a página de login
+    if usuario:
+        response = RedirectResponse("/login", status.HTTP_303_SEE_OTHER)
+        adicionar_mensagem_sucesso(response, "Cadastro realizado com sucesso!")
+        return response
+    # se não inseriu, redirecionar para a página de cadastro com mensagem de erro
+    else:
+        response = RedirectResponse("/inscrever", status.HTTP_303_SEE_OTHER)
+        adicionar_mensagem_erro(
+            response,
+            "Ocorreu um problema ao realizar seu cadastro. Tente novamente mais tarde.",
+        )
+        return response
 
 @router.get("/sair")
 async def get_sair():
