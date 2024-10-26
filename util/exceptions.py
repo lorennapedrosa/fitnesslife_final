@@ -1,3 +1,4 @@
+import traceback
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -39,20 +40,32 @@ def tratar_excecoes(app: FastAPI):
 
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc):
+        tb = traceback.extract_tb(exc.__traceback__)
+        filename, line, func, text = tb[-1]
+        detalhes = f"""
+            <p>Erro interno do servidor</p>
+            <p><b>Localização:</b><br>{filename} (linha {line})</p>
+            <p><b>Função:</b><br>{func}</p>
+            <p><b>Código com erro:</b><br>{text}</p>
+            <p><b>Tipo de erro:</b><br>{type(exc).__name__}: {exc}</p>
+        """
         dados = {
-            "request": request, 
-            "detail": f"Erro na requisição HTTP:<br>{type(exc).__name__}: {exc}",
-            "status_code": exc.status_code
+            "request": request,
+            "detail": detalhes,
+            "status_code": exc.status_code,
         }
-        return templates.TemplateResponse(
-            "pages/anonimo/erro.html", dados)
+        return templates.TemplateResponse("pages/anonimo/erro.html", dados)
 
     @app.exception_handler(Exception)
     async def general_exception_handler(request, exc):
-        dados = {
-            "request": request,
-            "detail": f"Erro interno do servidor.<br>{type(exc).__name__}: {exc}",
-            "status_code": 500
-        }
-        return templates.TemplateResponse(
-            "pages/anonimo/erro.html", dados)
+        tb = traceback.extract_tb(exc.__traceback__)
+        filename, line, func, text = tb[-1]
+        detalhes = f"""
+            <p>Erro interno do servidor</p>
+            <p><b>Localização:</b><br>{filename} (linha {line})</p>
+            <p><b>Função:</b><br>{func}</p>
+            <p><b>Código com erro:</b><br>{text}</p>
+            <p><b>Tipo de erro:</b><br>{type(exc).__name__}: {exc}</p>
+        """
+        dados = {"request": request, "detail": detalhes, "status_code": 500}
+        return templates.TemplateResponse("pages/anonimo/erro.html", dados)

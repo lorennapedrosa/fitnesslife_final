@@ -21,8 +21,8 @@ class UsuarioRepo:
                 (
                     usuario.nome,
                     usuario.data_nascimento,
+                    usuario.descricao,
                     usuario.email,
-                    usuario.telefone,
                     usuario.senha,
                     usuario.perfil,
                 ),
@@ -51,7 +51,7 @@ class UsuarioRepo:
             if dados is None:
                 return None
             return Usuario(**dados)
-        
+
     @staticmethod
     def obter_por_id(id: int) -> Optional[Usuario]:
         with obter_conexao() as db:
@@ -71,8 +71,8 @@ class UsuarioRepo:
                 (
                     usuario.nome,
                     usuario.data_nascimento,
+                    usuario.descricao,
                     usuario.email,
-                    usuario.telefone,
                     usuario.id,
                 ),
             )
@@ -85,13 +85,6 @@ class UsuarioRepo:
         with obter_conexao() as db:
             cursor = db.cursor()
             cursor.execute(SQL_ATUALIZAR_SENHA, (senha, id))
-            return cursor.rowcount > 0
-
-    @staticmethod
-    def atualizar_tema(id: int, tema: str) -> bool:
-        with obter_conexao() as db:
-            cursor = db.cursor()
-            cursor.execute(SQL_ATUALIZAR_TEMA, (tema, id))
             return cursor.rowcount > 0
 
     @staticmethod
