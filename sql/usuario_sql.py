@@ -4,7 +4,6 @@ SQL_CRIAR_TABELA = """
         nome VARCHAR(100) NOT NULL,
         data_nascimento DATE NOT NULL,
         email VARCHAR(100) NOT NULL,
-        telefone VARCHAR(20) NOT NULL,
         senha VARCHAR(100) NOT NULL,
         perfil INTEGER NOT NULL,
         tema VARCHAR(20) NOT NULL
@@ -12,7 +11,7 @@ SQL_CRIAR_TABELA = """
 """
 
 SQL_INSERIR = """
-    INSERT INTO usuario (nome, data_nascimento, email, telefone, senha, perfil, tema)
+    INSERT INTO usuario (nome, data_nascimento, email, senha, perfil, tema)
     VALUES (?, ?, ?, ?, ?, ?, "default")
 """
 
@@ -29,14 +28,14 @@ SQL_OBTER_DADOS_POR_EMAIL = """
 """
 
 SQL_OBTER_POR_ID = """
-    SELECT id, nome, data_nascimento, email, telefone, perfil, tema
+    SELECT id, nome, data_nascimento, email, perfil, tema
     FROM usuario
     WHERE id = ?
 """
 
 SQL_ATUALIZAR_DADOS = """
     UPDATE usuario
-    SET nome = ?, data_nascimento = ?, email = ?, telefone = ?
+    SET nome = ?, data_nascimento = ?, email = ?
     WHERE id = ?
 """
 
