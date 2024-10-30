@@ -11,4 +11,3 @@ class Usuario:
     email: Optional[str] = None
     senha: Optional[str] = None
     perfil: Optional[int] = None
-    tema: Optional[str] = None

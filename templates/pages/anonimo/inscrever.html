@@ -57,12 +57,27 @@
         <div class="content">
             <h1 class="text-center">Inscreva-se</h1>
             <p class="text-center">Preencha todos os campos abaixo para inscrever-se no Fitness Life</p>
-            <form action="/post_inscrever" method="post">
-                <input type="text" class="form-control" name="nome" placeholder="Nome" required>
-                <input type="email" class="form-control" name="email" placeholder="Email" required>
-                <input type="password" class="form-control" name="senha" placeholder="Senha" required>
-                <input type="password" class="form-control" name="confsenha" placeholder="Confirme a Senha" required>
-
+            <form action="/inscrever" method="post">
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" required>
+                    <label for="nome">Nome</label>
+                </div>
+                <div class="form-floating">
+                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    <label for="email">E-mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="date" class="form-control" name="data_nascimento" placeholder="Data de Nascimento" required>
+                    <label for="data_nascimento">Data de Nascimento</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" name="senha" placeholder="Senha" required>
+                    <label for="senha">Senha</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" name="confsenha" placeholder="Confirme a Senha" required>
+                    <label for="confsenha">Confirme a Senha</label>
+                </div>
                 <p>Marque uma das opções abaixo:</p>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="perfil" value="1" id="cliente">

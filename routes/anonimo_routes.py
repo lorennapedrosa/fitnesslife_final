@@ -3,9 +3,10 @@ import bcrypt
 from fastapi import APIRouter, Form, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from dto.usuario_autenticado_dto import UsuarioAutenticadoDto
 from models.usuario_model import Usuario
 from repositories.usuario_repo import UsuarioRepo
-from util.auth import NOME_COOKIE_AUTH, criar_token_jwt
+from util.auth import NOME_COOKIE_AUTH, adicionar_token_jwt, criar_token_jwt, remover_token_jwt
 from util.mensagens import adicionar_mensagem_erro, adicionar_mensagem_sucesso
 from util.validators import *
 
@@ -27,6 +28,7 @@ async def get_root(request: Request):
     if usuario.perfil == 3:
         return RedirectResponse("/personal", status_code=status.HTTP_303_SEE_OTHER)
 
+
 @router.get("/login")
 async def get_login(request: Request):
     return templates.TemplateResponse("pages/anonimo/login.html", {"request": request})
@@ -36,29 +38,29 @@ async def get_login(request: Request):
 async def post_login(
     email: str = Form(...), 
     senha: str = Form(...)):
-    usuario = UsuarioRepo.checar_credenciais(email, senha)
-    if usuario is None:
+    senha_hash = UsuarioRepo.obter_senha_por_email(email)
+    if not senha_hash or not bcrypt.checkpw(senha.encode(), senha_hash.encode()):
         print(f"Login falhou para o email: {email}")
         response = RedirectResponse("/login?erro=credenciais_invalidas", status_code=status.HTTP_303_SEE_OTHER)
         return response
-    token = criar_token_jwt(usuario[0], usuario[1], usuario[2], usuario[3])
+    usuario = UsuarioRepo.obter_dados_por_email(email)
+    usuario_dto = UsuarioAutenticadoDto(
+        usuario.id, 
+        usuario.nome, 
+        usuario.data_nascimento, 
+        usuario.email, 
+        usuario.perfil)
+    token = criar_token_jwt(usuario_dto)
     nome_perfil = None
-    match (usuario[3]):
+    match (usuario_dto.perfil):
         case 1: nome_perfil = "cliente"
         case 2: nome_perfil = "nutricionista"
         case 3: nome_perfil = "personal"
         case _: nome_perfil = ""
     response = RedirectResponse(f"/{nome_perfil}", status_code=status.HTTP_303_SEE_OTHER)    
-    response.set_cookie(
-        key=NOME_COOKIE_AUTH,
-        value=token,
-        max_age=3600*24*365*10,  # Token com validade longa
-        httponly=True,
-        samesite="lax"
-    )
-    print(f"Login bem-sucedido para o email: {email}")
+    adicionar_token_jwt(response, token)
+    adicionar_mensagem_sucesso(response, "Login realizado com sucesso!")
     return response
-
 
 
 @router.get("/inscrever")
@@ -70,6 +72,7 @@ async def get_inscrever(request: Request):
     ]
     return templates.TemplateResponse("pages/anonimo/inscrever.html", {"request": request, "options_perfis": options_perfis})
 
+
 @router.post("/inscrever")
 async def post_inscrever(
     request: Request):
@@ -80,8 +83,8 @@ async def post_inscrever(
     # validar dados do formulário
     erros = {}
     # validação da senha igual à confirmação da senha
-    if is_matching_fields(dados["senha"], "senha", "Senha", dados["confirmacao_senha"], "Confirmação de Senha", erros):
-        dados.pop("confirmacao_senha")
+    if is_matching_fields(dados["senha"], "senha", "Senha", dados["confsenha"], "Confirmação de Senha", erros):
+        dados.pop("confsenha")
     # validação do nome
     is_person_fullname(dados["nome"], "nome", "Nome", erros)
     is_size_between(dados["nome"], "nome", "Nome", 5, 64, erros)
@@ -118,20 +121,18 @@ async def post_inscrever(
         )
         return response
 
+
 @router.get("/sair")
 async def get_sair():
     response = RedirectResponse("/", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
-    response.set_cookie(
-        key=NOME_COOKIE_AUTH,
-        value="",
-        max_age=1,
-        httponly=True,
-        samesite="lax")
+    remover_token_jwt(response)
     return response  
+
 
 @router.get("/esqueceu_sua_senha")
 async def get_login(request: Request):
     return templates.TemplateResponse("pages/anonimo/esqueceu_sua_senha.html", {"request": request})
+
 
 @router.get("/redefinir_senha")
 async def get_login(request: Request):

@@ -5,14 +5,13 @@ SQL_CRIAR_TABELA = """
         data_nascimento DATE NOT NULL,
         email VARCHAR(100) NOT NULL,
         senha VARCHAR(100) NOT NULL,
-        perfil INTEGER NOT NULL,
-        tema VARCHAR(20) NOT NULL
+        perfil INTEGER NOT NULL
     )
 """
 
 SQL_INSERIR = """
-    INSERT INTO usuario (nome, data_nascimento, email, senha, perfil, tema)
-    VALUES (?, ?, ?, ?, ?, ?, "default")
+    INSERT INTO usuario (nome, data_nascimento, email, senha, perfil)
+    VALUES (?, ?, ?, ?, ?)
 """
 
 SQL_OBTER_SENHA_POR_EMAIL = """
@@ -22,13 +21,13 @@ SQL_OBTER_SENHA_POR_EMAIL = """
 """
 
 SQL_OBTER_DADOS_POR_EMAIL = """
-    SELECT id, nome, email, perfil, tema
+    SELECT id, nome, data_nascimento, email, perfil
     FROM usuario
     WHERE email = ?
 """
 
 SQL_OBTER_POR_ID = """
-    SELECT id, nome, data_nascimento, email, perfil, tema
+    SELECT id, nome, data_nascimento, email, perfil
     FROM usuario
     WHERE id = ?
 """
@@ -42,12 +41,6 @@ SQL_ATUALIZAR_DADOS = """
 SQL_ATUALIZAR_SENHA = """
     UPDATE usuario
     SET senha = ?
-    WHERE id = ?
-"""
-
-SQL_ATUALIZAR_TEMA = """
-    UPDATE usuario
-    SET tema = ?
     WHERE id = ?
 """
 
