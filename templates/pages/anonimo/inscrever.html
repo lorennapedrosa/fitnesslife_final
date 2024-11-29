@@ -76,6 +76,7 @@
                 <div id="senhaError" class="error" style="display:none;">A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.</div>
                 
                 {{ macros.input_password('confsenha', 'Confirme a Senha', 'required') }}
+                <div id="confSenhaError" class="error" style="display:none;">As senhas não coincidem. Por favor, verifique.</div>
                 
                 <p>Marque uma das opções abaixo:</p>
                 <div class="form-check">
@@ -128,6 +129,15 @@
             isValid = false;
         } else {
             document.getElementById('senhaError').style.display = 'none';
+        }
+
+        // Verificar se as senhas coincidem
+        let confSenha = document.getElementById('confsenha').value;
+        if (senha !== confSenha) {
+            document.getElementById('confSenhaError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('confSenhaError').style.display = 'none';
         }
 
         // Se algum erro, prevenir o envio do formulário
