@@ -1,0 +1,35 @@
+{% macro input_text(name, label, attributes='', value='', div_classes='') %}
+<div class="{{div_classes}}">
+    <div class="form-floating">
+        <input type="text" name="{{name}}" id="{{name}}" class="form-control" placeholder=" " {{attributes|safe}} value="{{value|e}}">
+        <label for="{{name}}">{{label}}</label>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro input_email(name, label, attributes='', value='', div_classes='') %}
+<div class="{{div_classes}}">
+    <div class="form-floating">
+        <input type="email" name="{{name}}" id="{{name}}" class="form-control" placeholder=" " {{attributes|safe}} value="{{value|e}}">
+        <label for="{{name}}">{{label}}</label>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro input_password(name, label, attributes='', div_classes='') %}
+<div class="{{div_classes}}">
+    <div class="form-floating">
+        <input type="password" name="{{name}}" id="{{name}}" class="form-control" placeholder=" " {{attributes|safe}}>
+        <label for="{{name}}">{{label}}</label>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro input_date(name, label, attributes='', value='', div_classes='') %}
+<div class="{{div_classes}}">
+    <div class="form-floating">
+        <input type="date" name="{{name}}" id="{{name}}" class="form-control" placeholder=" " {{attributes|safe}} value="{{value|e}}">
+        <label for="{{name}}">{{label}}</label>
+    </div>
+</div>
+{% endmacro %}
