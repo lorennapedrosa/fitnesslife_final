@@ -1,6 +1,7 @@
 {% extends "shared/base_publica.html" %}
 {% block subtitulo %}Inscreva-se{% endblock %}
 {% block conteudo %}
+{% import "shared/macros.html" as macros %}
 <style>
     .bg-cover {
         position: relative;
@@ -50,6 +51,11 @@
     .text-center a {
         color: #007bff;
     }
+
+    .error {
+        color: red;
+        font-size: 0.9em;
+    }
 </style>
 
 <div class="bg-cover">
@@ -57,27 +63,20 @@
         <div class="content">
             <h1 class="text-center">Inscreva-se</h1>
             <p class="text-center">Preencha todos os campos abaixo para inscrever-se no Fitness Life</p>
-            <form action="/inscrever" method="post">
-                <div class="form-floating">
-                    <input type="text" class="form-control" name="nome" placeholder="Nome" required>
-                    <label for="nome">Nome</label>
-                </div>
-                <div class="form-floating">
-                    <input type="email" class="form-control" name="email" placeholder="Email" required>
-                    <label for="email">E-mail</label>
-                </div>
-                <div class="form-floating">
-                    <input type="date" class="form-control" name="data_nascimento" placeholder="Data de Nascimento" required>
-                    <label for="data_nascimento">Data de Nascimento</label>
-                </div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" name="senha" placeholder="Senha" required>
-                    <label for="senha">Senha</label>
-                </div>
-                <div class="form-floating">
-                    <input type="password" class="form-control" name="confsenha" placeholder="Confirme a Senha" required>
-                    <label for="confsenha">Confirme a Senha</label>
-                </div>
+            <form id="signupForm" action="/inscrever" method="post">
+                
+                {{ macros.input_text('nome', 'Nome Completo', 'required', '', 'form-floating') }}
+                <div id="nomeError" class="error" style="display:none;">Por favor, insira seu nome e sobrenome.</div>
+
+                {{ macros.input_email('email', 'E-mail', 'required') }}
+                
+                {{ macros.input_date('data_nascimento', 'Data de Nascimento', 'required') }}
+                
+                {{ macros.input_password('senha', 'Senha', 'required') }}
+                <div id="senhaError" class="error" style="display:none;">A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.</div>
+                
+                {{ macros.input_password('confsenha', 'Confirme a Senha', 'required') }}
+                
                 <p>Marque uma das opções abaixo:</p>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="perfil" value="1" id="cliente">
@@ -106,4 +105,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+        let isValid = true;
+
+        // Verificar se o campo nome tem pelo menos dois nomes
+        let nome = document.getElementById('nome').value.trim();
+        let nomeParts = nome.split(' ');
+        if (nomeParts.length < 2) {
+            document.getElementById('nomeError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('nomeError').style.display = 'none';
+        }
+
+        // Verificar a senha
+        let senha = document.getElementById('senha').value;
+        let senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!senhaRegex.test(senha)) {
+            document.getElementById('senhaError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('senhaError').style.display = 'none';
+        }
+
+        // Se algum erro, prevenir o envio do formulário
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
 {% endblock %}

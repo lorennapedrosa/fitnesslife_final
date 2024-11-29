@@ -33,3 +33,20 @@
     </div>
 </div>
 {% endmacro %}
+
+{% macro input_date(name, label, attributes='', value='', div_classes='') %}
+<div class="{{div_classes}}">
+    <div class="form-floating">
+        <input type="date" name="{{name}}" id="{{name}}" class="form-control" placeholder=" " {{attributes|safe}} value="{{value|e}}">
+        <label for="{{name}}">{{label}}</label>
+    </div>
+</div>
+{% endmacro %}
+{% macro input_radio(name, label, value, id) %}
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="{{name}}" value="{{value}}" id="{{id}}">
+        <label class="form-check-label" for="{{id}}">
+            {{label}}
+        </label>
+    </div>
+{% endmacro %}
